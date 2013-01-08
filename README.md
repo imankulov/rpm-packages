@@ -22,3 +22,10 @@ Then download sources from specs. You may pick one or more specfiles.
 Then build a package of your dream.
 
     mock --scm-enable  --scm-option package=python-pip -v
+
+After the build yo may use `./helpers/sync_to_s3.sh` to build the repo and publish it to Amazon S3:
+
+    echo 'export YUM_S3_BUCKET=name-of-the-bucket' >> ~/.bashrc
+    source ~/.bashrc
+
+    ./helpers/sync_to_s3.sh 
