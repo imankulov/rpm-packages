@@ -1,0 +1,42 @@
+commit b5d39276af0e3ed80a8565d567a00b02fdafedfb
+Author: Thomas Spura <thomas.spura@gmail.com>
+Date:   Fri Dec 14 13:46:18 2012 +0100
+
+    Don't enable pylab mode, when matplotlib is not importable
+    
+    On a headless server, matplotlib is a unnecessary dependency and the ipython
+    console will crash badly, when tring to enable %pylab there.
+    In that case, just don't enable %pylab and ask the user to install matplotlib.
+    
+    Original bug report: https://bugzilla.redhat.com/show_bug.cgi?id=872176
+
+diff --git a/IPython/core/interactiveshell.py b/IPython/core/interactiveshell.py
+index d87fcb7..f39ba6a 100644
+--- a/IPython/core/interactiveshell.py
++++ b/IPython/core/interactiveshell.py
+@@ -2864,6 +2864,10 @@ def enable_pylab(self, gui=None, import_all=True, welcome_message=False):
+         except KeyError:
+             error("Backend %r not supported" % gui)
+             return
++        except ImportError:
++            error("pylab mode doesn't work as matplotlib could not be found." + \
++                  "\nIs it installed on the system?")
++            return
+         self.user_ns.update(ns)
+         self.user_ns_hidden.update(ns)
+         # Now we must activate the gui pylab wants to use, and fix %run to take
+diff --git a/IPython/core/shellapp.py b/IPython/core/shellapp.py
+index d451d7c..4539c06 100644
+--- a/IPython/core/shellapp.py
++++ b/IPython/core/shellapp.py
+@@ -203,6 +203,10 @@ def init_gui_pylab(self):
+                     self.log.info("Enabling GUI event loop integration, "
+                                   "toolkit=%s" % self.gui)
+                     shell.enable_gui(self.gui)
++            except ImportError:
++                self.log.warn("pylab mode doesn't work as matplotlib could not be found." + \
++                              "\nIs it installed on the system?")
++                self.shell.showtraceback()
+             except Exception:
+                 self.log.warn("GUI event loop or pylab initialization failed")
+                 self.shell.showtraceback()
