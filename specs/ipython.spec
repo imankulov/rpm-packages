@@ -4,7 +4,7 @@
 
 Name:           ipython
 Version:        0.13.1
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        An enhanced interactive Python shell
 
 Group:          Development/Libraries
@@ -67,6 +67,7 @@ Requires:       python-zmq
 Requires:       pexpect
 Requires:       python-mglob
 Requires:       python-simplegeneric
+Requires:       python-argparse
 
 %description -n python-ipython-console
 %{ipython_desc_base}
@@ -206,7 +207,7 @@ rm -rf %{buildroot}
 
 
 %changelog
-* Thu Feb 28 2013 Roman Imankulov <roman.imankulov@gmail.com> - 0.13.1-3
+* Thu Feb 28 2013 Roman Imankulov <roman.imankulov@gmail.com> - 0.13.1-5
 - Package version is significantly cut off. Removed GUI, notebook, py3k support, etc
 
 * Thu Feb 21 2013 Thomas Spura <tomspur@fedoraproject.org> - 0.13.1-4
